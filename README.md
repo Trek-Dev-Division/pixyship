@@ -1,24 +1,49 @@
 # PixyShip
 
 ## Requirements
+
 * Python 3.9
 * NPM 7.5.0
 * Docker
 
 ## Getting Started locally
-1. Pip install the dev requirements: `pip install -r dev_reqs.txt`
-2. Install npm packages: `fab npm_install`
-2. Configure database access: 
-    - `ln -s config/alembic_dev.ini alembic.ini`
-    - `vim alembic.ini`
-3. Create Postgres database :
-    - in a container: `fab create_postgres`
-    - OR juste create database: `alembic upgrade head`
-4. Build the UI: `fab build_ui`
-5. Initial data load: `fab update_data`
-6. Initial data load of players: `python data_load.py`
-7. Start the front-end dev environment: `fab ui`
-8. Start the back end from the virtual environment (activate it) then `python run.py`
+
+```bash
+
+# Create virtualenv
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Install npm dependencies
+(cd frontend/ && npm install)
+
+# Configure database
+ln -s config/alembic_dev.ini alembic.ini
+${EDITOR} alembic.ini # update sqlalchemy.url
+
+# Create database
+alembic upgrade head
+
+# Build UI
+(cd frontend/ && npm run build)
+
+# Initial data load
+python data_load.py --data
+python data_load.py --players
+```
+
+Run :
+
+```bash
+# Frontend
+(cd frontend/ && npm run dev)
+
+# Backend
+python run.py
+```
 
 Access the web server at localhost:8080
 
